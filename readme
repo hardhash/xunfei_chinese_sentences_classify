@@ -1,0 +1,19 @@
+step1、数据重写+规范化处理
+    1、改写preprocess/config.py文件对应路径为自己路径， split_rate为切分训练集和验证集比例。
+    2、数据重写：运行preprocess文件夹中trans2csv.py文件，把比赛训练和测试数据集转化成可pandas读写的形式
+    3、数据规范：运行preprocess文件夹中preprocess.py文件，把重写后的数据利用正则规范化处理，并把处理后的结果保存在main主逻辑文件目录中。规范包括去除非法字符以及test.csv增加人工label列满足后续模型dataloader要求。
+
+
+step2、数据迭代器
+    1、运行main/utils.py，查看是否可以进行数据迭代
+
+step3、模型训练
+    1、根据自己运行环境和GPU能力，改写main/config.py文件参数，包括base_dir数据保存路径, train_epoch训练轮次, batch_size批训练大小，embed_learning_rate和learning_rate上下游学习率，核对huggingface下载的tokenizer文件模型.bin文件和bert_file, bert_config_file, vocab_file是否一致（GPU对2的幂次的batch可以发挥更佳的性能，因此建议设置16，32，64，128...）
+    2、运行train_fine_tune.py进行训练
+
+step4、预测
+    1、在main/Savemodel中找到最优性能的模型，改写config文件checkpoint_path路径
+    2、运行main/predict.py，得到预测结果result.csv
+    3、运行main/submission.py，把预测结果处理成符合提交要求的格式submission_{time.time()}.csv
+
+step5、提交rank
